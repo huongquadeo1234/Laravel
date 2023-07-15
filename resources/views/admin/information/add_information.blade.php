@@ -41,6 +41,7 @@
         <label for="exampleInputEmail1">Hình ảnh logo</label>
         <input type="file" name="info_image" class="form-control" id="exampleInputEmail1">
         <img src="{{URL::to('public/uploads/contact/'.$cont->info_logo)}}" height="100" width="100">
+        
       </div>
       <div class="form-group">
         <label for="exampleInputEmail1">Slogan Logo</label>

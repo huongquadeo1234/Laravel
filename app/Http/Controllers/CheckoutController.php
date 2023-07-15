@@ -577,6 +577,8 @@ class CheckoutController extends Controller
     	Session::forget('customer_id');
     	Session::forget('coupon');
     	Session::forget('cart');
+        Session::forget('success_paypal');
+        Session::forget('success_momo');
         // Session::forget('success_vnpay');  
         Toastr::success('Đăng xuất thành công','Thành công');
 
@@ -598,7 +600,7 @@ class CheckoutController extends Controller
     		Session::put('customer_name',$result->customer_name);
             Toastr::success('Đăng nhập thành công','Thành công');
 
-    		return Redirect::to('/checkout');
+    		return Redirect::to('/');
     	}
         else{
             Toastr::error('Vui lòng thử lại kiểm tra lại tài khoản và mật khẩu','Thất bại');

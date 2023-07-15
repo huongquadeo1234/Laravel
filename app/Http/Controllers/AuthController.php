@@ -10,7 +10,7 @@ use Toastr;
 class AuthController extends Controller
 {
     public function register_auth(){
-        return view('admin.custom_auth.register');
+        return view('admin.login.register');
     }
 
     public function login_auth(){

@@ -146,15 +146,36 @@
                                    $customer_id = Session::get('customer_id');
                                    if($customer_id!=NULL){ 
                                  ?>
-                                <li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Đăng xuất</a>
-                                    <img width="20%" src="{{Session::get('customer_picture')}}" alt="">
-                                    <span style="color:red;">{{Session::get('customer_name')}}</span>
-                                </li>
+                                  <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-user"></i>  Tài khoản <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                      <a class="dropdown-item" href="{{URL::to('/logout-checkout')}}"><i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất</a><br> <a class="dropdown-item" href="{{route('info-customer')}}"><i class="fa fa-info" aria-hidden="true"></i> Thông tin tài khoản</a> 
+                                      <br><img width="10%" src="{{Session::get('customer_picture')}}" alt="">
+                                      
+                                      <span style="color:red;">{{Session::get('customer_name')}}</span><br/>
+                                      
+                                    
+                                    </div>
+                                  </li>
+                               
+                                
 
                                 <?php
                             }else{
                                  ?>
-                                <li><a href="{{URL::to('/dang-nhap')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+                               
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-user"></i>  Tài khoản <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                      <a class="dropdown-item" href="{{URL::to('/dang-nhap')}}"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập</a><br/>
+                                      <a class="dropdown-item" href="{{URL::to('/login-customer-google')}}"><i class="fa fa-sign-in" aria-hidden="true"></i> Đăng nhập bằng google</a>
+                                    
+                                    </div>
+                                  </li>
                                 <?php 
                              }
                                  ?>
@@ -199,8 +220,7 @@
                                         @endforeach
                                     </ul>
                                 </li> --}}
-                                <li class="dropdown"><a href="#">Tin tức<i class="fa fa-angle-down"></i></a>
-
+                              
                                 </li>
                                 @if(!Session::get('success_paypal')==true)
 
@@ -373,7 +393,19 @@
     <script async defer crossorigin="anonymous"
         src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v6.0&appId=2339123679735877&autoLogAppEvents=1">
     </script>
-
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/64afb1d0cc26a871b0281ece/1h574t6al';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 
     <script>
         $(document).ready(function() {
@@ -553,15 +585,19 @@
                         var order_fee = $('.order_fee').val();
                         var order_coupon = $('.order_coupon').val();
                         var _token = $('input[name="_token"]').val();
-
-                        $.ajax({
+                        if(shipping_name=='' || shipping_email=='' || shipping_address=='' || shipping_phone=='' || shipping_notes==''){
+                            alert('Làm ơn điền đầy đủ thông tin người nhận.');
+                        }else{
+                            $.ajax({
                             url: '{{url('/confirm-order')}}',
                             method: 'POST',
                             data:{shipping_email:shipping_email,shipping_name:shipping_name,shipping_address:shipping_address,shipping_phone:shipping_phone,shipping_notes:shipping_notes,_token:_token,order_fee:order_fee,order_coupon:order_coupon,shipping_method:shipping_method},
                             success:function(){
                                swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
                             }
-                        });
+                            });
+                        }
+                      
 
                         window.setTimeout(function(){ 
                             window.location.href = "{{url('/history')}}";

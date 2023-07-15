@@ -50,9 +50,9 @@ return [
     ],
     
     'google' => [
-        'client_id' => '1095278276551-ng8tudivghlkmvnsqoojs11n2fj7p20g.apps.googleusercontent.com',
-        'client_secret' => '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',
-        'redirect' => 'http://laptopstore.com/LaptopStore/google/callback' 
+        'client_id' => '890964923097-eufng1i22outfo4uakbiqf90lrnao7ce.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => env('APP_URL').'/customer/google/callback' 
     ],
 
 

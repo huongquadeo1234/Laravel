@@ -78,6 +78,9 @@ Route::get('/google/callback','AdminController@callback_google');
 //Login customer google
 Route::get('/login-customer-google','AdminController@login_customer_google');
 Route::get('/customer/google/callback','AdminController@callback_customer_google');
+Route::get('info-customer','AdminController@info_customer')->name('info-customer');
+Route::post('update-info-customer','AdminController@update_customer')->name('update-info-customer');
+
 //
 Route::post('/save-category-product','CategoryProduct@save_category_product');
 Route::post('/update-category-product/{category_product_id}','CategoryProduct@update_category_product');

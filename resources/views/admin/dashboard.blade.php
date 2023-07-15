@@ -36,6 +36,16 @@
         </div>
       </div>
     </div>
+    <div class="col_3">
+      <div class=" col-md-3 widget widget1">
+        <div class="r3_counter_box">
+          <i class="pull-left fa fa-user icon-rounded"></i>
+          <div class="stats">
+            <h5><strong>{{$visitors_total}}</strong></h5>
+            <span>Visitor</span>
+          </div>
+        </div>
+      </div>
     {{-- <div class="col-md-3 widget widget1">
       <div class="r3_counter_box">
         <i class="pull-left fa fa-pie-chart dollar1 icon-rounded"></i>
@@ -100,81 +110,36 @@
     </div>
   </div>
 
+
   <div class="row">
-    <style type="text/css">
-      table.table-bordered.table-dark {
-        background: #555;
-      }
+   
 
-      table.table-bordered.table-dark tr th {
-        color: #fff;
-      }
+    <div class="col-md-12 col-xs-12 ml-200">
+      
 
-      .table>tbody>tr>td {
-        color: white;
-      }
-    </style>
-    <p class="title_thongke">Thống kê truy cập</p>
-    <table class="table table-bordered table-dark">
+    </div>
+    <p  class="title_thongke">Sản phẩm xem nhiều</p>
+    <table class="table">
       <thead>
         <tr>
-          {{-- <th scope="col">Đang online</th> --}}
-          <th scope="col">Tổng tháng trước</th>
-          <th scope="col">Tổng tháng này</th>
-          <th scope="col">Tổng một năm</th>
-          <th scope="col">Tổng truy cập</th>
+          <th>#</th>
+          <th>Tiêu đề sản phẩm</th>
+          <th>Lượt xem</th>
+          <th>Xem</th>
         </tr>
       </thead>
       <tbody>
+        @foreach($product_views as $key => $pro)
         <tr>
-
-          {{-- <td>{{$visitor_count}}</td> --}}
-          <td>{{$visitor_last_month_count}}</td>
-          <td>{{$visitor_this_month_count}}</td>
-          <td>{{$visitor_year_count}}</td>
-          <td>{{$visitors_total}}</td>
+          <th scope="row">{{$key}}</th>
+          <td>{{$pro->product_name}}</td>
+          <td>{{$pro->product_views}}</td>
+          <td> <a target="_blank" href="{{url('/chi-tiet/'.$pro->product_slug)}}">Xem sản phẩm</a></td>
         </tr>
-
+        @endforeach
+      
       </tbody>
     </table>
-  </div>
-
-  <div class="row">
-    <div class="col-md-4 col-xs-12">
-      <p class="title_thongke">Thống kê tổng sản phẩm bài viết đơn hàng</p>
-      <div id="donut"></div>
-    </div>
-
-    <div class="col-md-4 col-xs-12 ml-200">
-      <style type="text/css">
-        ol.list_views {
-
-          color: #333;
-        }
-
-        .ml-200 {
-          margin-left: 200px;
-        }
-
-        ol.list_views a {
-          color:orange {
-            color: orange;
-            font-weight: 400;
-          }
-        }
-      </style>
-
-      <h3>Sản phẩm xem nhiều</h3>
-      <ol class="list_views">
-        @foreach($product_views as $key => $pro)
-        <li>
-          <a target="_blank" href="{{url('/chi-tiet/'.$pro->product_slug)}}">{{$pro->product_name}}|<span
-              style="color:black">{{$pro->product_views}}</span></a>
-        </li>
-
-        @endforeach
-      </ol>
-    </div>
   </div>
 
 </div>

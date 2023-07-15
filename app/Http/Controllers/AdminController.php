@@ -20,23 +20,55 @@ use App\Product;
 use App\Post;
 use App\Order;
 use App\Video;
+use App\Contact;
 use App\Customer;
 use App\CategoryProductModel;
 use App\Brand;
+use App\Slider;
 use App\SocialCustomers;
 use Toastr;
 
 class AdminController extends Controller
 {
-   
+    public function update_customer(Request $request){
+        $customer = Customer::find(Session::get('customer_id'));
+        $customer->customer_name = $request->name;
+        $customer->customer_email = $request->email;
+        $customer->customer_phone = $request->phone;
+        if($request->new_password){
+            $customer->customer_password = md5($request->new_password);
+        }
+        $customer->save();
+        Toastr::success('Cập nhật tài khoản thành công.','Thành công');
+        return redirect()->back();
+        
+        
 
+    }
+    public function info_customer(Request $request){
+        $customer_id = Session::get('customer_id');
+        $customer = Customer::where('customer_id',$customer_id)->first();
+       
+        $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
+         //seo 
+         $meta_desc = "Thông tin tài khoản"; 
+         $meta_keywords = "Thông tin tài khoản";
+         $meta_title = "Trang chủ | Thông tin tài khoản";
+         $url_canonical = $request->url();
+         //--seo
+         
+         $cate_product = DB::table('tbl_category_product')->where('category_status','1')->orderby('category_id','desc')->get(); 
+         $brand_product = DB::table('tbl_brand')->where('brand_status','1')->orderby('brand_id','desc')->get(); 
+        $contact = Contact::where('info_id',1)->get();
+        return view('pages.customer.info')->with('customer',$customer)->with('category',$cate_product)->with('brand',$brand_product)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('contact',$contact); //1;
+    }
     public function login_customer_google(){
-        config(['services.google.redirect' => env('GOOGLE_CLIENT_URL')]);
+        //config(['services.google.redirect' => env('GOOGLE_CLIENT_URL')]);
         return Socialite::driver('google')->redirect();
     }
     public function callback_customer_google(){
-    config(['services.google.redirect' => env('GOOGLE_CLIENT_URL')]);
-    $users = Socialite::driver('google')->stateless()->user(); 
+    //config(['services.google.redirect' => env('GOOGLE_CLIENT_URL')]);
+    $users = Socialite::driver('google')->user(); 
             $authUser = $this->findOrCreateCustomer($users,'google');
            if($authUser)
            {
@@ -44,16 +76,19 @@ class AdminController extends Controller
             Session::put('customer_id',$account_name->customer_id);
             Session::put('customer_picture',$account_name->customer_picture);
             Session::put('customer_name',$account_name->customer_name);
+            Session::put('customer_email',$account_name->customer_email);
+            Session::put('customer_phone',$account_name->customer_phone);
 
            }elseif($customer_new){
             $account_name = Customer::where('customer_id',$authUser->user)->first();
             Session::put('customer_id',$account_name->customer_id);
             Session::put('customer_picture',$account_name->customer_picture);
             Session::put('customer_name',$account_name->customer_name);
+            Session::put('customer_phone',$account_name->customer_phone);
            }
            Toastr::success('Đăng nhập bằng tài khoản Google thành công','Thành công');
 
-           return redirect('/checkout');  
+           return redirect('/');  
 
     }
     public function findOrCreateCustomer($users, $provider){
@@ -76,8 +111,8 @@ class AdminController extends Controller
                         'customer_name' => $users->name,
                         'customer_email' => $users->email,
                         'customer_picture' => $users->avatar,
-                        'customer_password' => '',
-                        'customer_phone' => ''
+                        'customer_password' => md5('123456'),
+                        'customer_phone' => '123456'
                         
                     ]);
                 }
@@ -154,6 +189,9 @@ class AdminController extends Controller
          
 
     }
+    public function login_facebook(){
+        return Socialite::driver('facebook')->redirect();
+    }
     public function dashboard_filter(Request $request){
             $data= $request->all();
 
@@ -181,7 +219,7 @@ class AdminController extends Controller
             }
 
             foreach ($get as $key => $val) {
-                $chart_data[] = array(
+                $chart[] = array(
                     'period' => $val->order_date,
                     'order' =>$val->total_order,
                     'sales' =>$val->sales,
@@ -190,7 +228,7 @@ class AdminController extends Controller
                 );
             }
 
-            echo $data = json_encode($chart_data);
+            echo $data = json_encode($chart);
 
         }
         public function days_order(Request $request){
@@ -220,7 +258,7 @@ class AdminController extends Controller
 
             $get= Statistic::whereBetween('order_date',[$from_date,$to_date])->orderBy('order_date','ASC')->get();
             foreach ($get as $key => $val) {
-                $chart_data[] = array(
+                $chart[] = array(
                     'period' => $val->order_date,
                     'order' =>$val->total_order,
                     'sales' =>$val->sales,
@@ -229,7 +267,7 @@ class AdminController extends Controller
                 );
             }
 
-            echo $data = json_encode($chart_data);
+            echo $data = json_encode($chart);
 
         }
 
@@ -237,9 +275,7 @@ class AdminController extends Controller
    
 
 
-    public function login_facebook(){
-        return Socialite::driver('facebook')->redirect();
-    }
+    
 
     public function callback_facebook(){
         $provider = Socialite::driver('facebook')->user();
@@ -350,7 +386,7 @@ class AdminController extends Controller
         //  $video = Video::all()->count();
          $customer = Customer::all()->count();
 
-         $product_views = Product::orderBy('product_views','desc')->take(20)->get();
+         $product_views = Product::orderBy('product_views','desc')->take(11)->get();
         //  $post_views = Post::orderBy('post_views','desc')->take(20)->get();
 
     	return view('admin.dashboard')->with(compact('visitors_total','visitor_count','visitor_last_month_count','visitor_this_month_count','visitor_year_count','product','customer','order','product_views','brand','category','doanhthu'));

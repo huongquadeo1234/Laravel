@@ -94,6 +94,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 <div class="clearfix"> </div>
               </div>
               <input type="submit" name="login" value="Đăng nhập">
+              
               {{-- <div class="registration">
                 Don't have an account ?
                 <a class="" href="signup.html">
@@ -101,11 +102,12 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 </a>
               </div> --}}
             </form>
-            {{-- <a href="{{url('/login-facebook')}}">Đăng nhập bằng Facebook </a> |
-            <a href="{{url('/register-auth')}}">Đăng ký tài khoản </a> --}}
+            
+         
+            <a class="register-new" href="{{url('/register-auth')}}">Đăng ký tài khoản mới</a>
           </div>
         </div>
-
+        
       </div>
     </div>
     <!--footer-->

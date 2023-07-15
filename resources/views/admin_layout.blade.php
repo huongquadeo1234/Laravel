@@ -155,14 +155,14 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
               <li class="treeview ">
                 <a href="{{URL::to('/manage-order')}}">
-                  <i class="fa fa-laptop"></i>
+                  <i class="fa fa-files-o" ></i>
                   <span>Quản lý đơn hàng</span>
                 </a>
 
               </li>
               <li class="treeview ">
                 <a href="#">
-                  <i class="fa fa-laptop"></i>
+                  <i class="fa fa-percent" aria-hidden="true"></i>
                   <span>Mã giảm giá</span>
                   <i class="fa fa-angle-left pull-right"></i>
                 </a>
@@ -177,7 +177,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
               </li>
               <li class="treeview ">
                 <a href="{{URL::to('/delivery')}}">
-                  <i class="fa fa-laptop"></i>
+                  <i class="fa fa-truck" aria-hidden="true"></i>
                   <span>Quản lý vận chuyển</span>
 
                 </a>
@@ -186,7 +186,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
               <li class="header">Quản lý trang khách</li>
               <li class="treeview">
                 <a href="{{url('/information')}}">
-                  <i class="fa fa-dashboard"></i> <span>Thông tin website</span>
+                  <i class="fa fa-info"></i> <span>Thông tin website</span>
                 </a>
               </li>
               <li class="treeview ">
@@ -259,7 +259,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
 
 
 
-              <li class="header">LABELS</li>
+             
 
               @impersonate
               <li class="treeview ">
@@ -360,15 +360,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                 </div>
               </a>
               <ul class="dropdown-menu drp-mnu">
-                <li>
-                  <a href="#"><i class="fa fa-cog"></i> Settings</a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-user"></i> My Account</a>
-                </li>
-                <li>
-                  <a href="#"><i class="fa fa-suitcase"></i> Profile</a>
-                </li>
+               
                 <li>
                   <a href="{{URL::to('/logout-auth')}}"><i class="fa fa-sign-out"></i> Đăng xuất</a>
                 </li>
@@ -650,35 +642,35 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     $(document).ready(function(){
 
       
-      var colorDanger = "#FF1744";
-            Morris.Donut({
-            element: 'donut',
-            resize: true,
-            colors: [
-                '#E0F7FA',
-                '#B2EBF2',
-                '#80DEEA',
-                '#4DD0E1',
-                '#26C6DA',
-                '#00BCD4',
-                '#00ACC1',
-                '#0097A7',
-                '#00838F',
-                '#006064'
-            ],
-            //labelColor:"#cccccc", // text color
-            //backgroundColor: '#333333', // border color
-            data: [
-                {label:"San pham", value:<?php echo $product ?>},
-                //value test
-                {label:"Bai viet", value:5},
-                {label:"Video", value:6},
-                //value test 
+      // var colorDanger = "#FF1744";
+      //       Morris.Donut({
+      //       element: 'donut',
+      //       resize: true,
+      //       colors: [
+      //           '#E0F7FA',
+      //           '#B2EBF2',
+      //           '#80DEEA',
+      //           '#4DD0E1',
+      //           '#26C6DA',
+      //           '#00BCD4',
+      //           '#00ACC1',
+      //           '#0097A7',
+      //           '#00838F',
+      //           '#006064'
+      //       ],
+      //       //labelColor:"#cccccc", // text color
+      //       //backgroundColor: '#333333', // border color
+      //       data: [
+      //           {label:"San pham", value:<?php echo $product ?>},
+      //           //value test
+      //           {label:"Bai viet", value:5},
+      //           {label:"Video", value:6},
+      //           //value test 
             
-                {label:"Don hang", value:<?php echo $order ?>},
-                {label:"Khach hang", value:<?php echo $customer ?>}
-            ]
-            });
+      //           {label:"Don hang", value:<?php echo $order ?>},
+      //           {label:"Khach hang", value:<?php echo $customer ?>}
+      //       ]
+      //       });
 
 
 

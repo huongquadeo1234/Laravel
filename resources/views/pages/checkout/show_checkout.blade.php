@@ -329,12 +329,7 @@
 			@if(!Session::get('success_momo')==true)
 			@if(Session::get('cart'))
 			<td>
-				<form action="{{url('/vnpay-payment')}}" method="post">
-					{{ csrf_field() }}
-					<input type="hidden" name="total_vnpay" value="{{$total_after}}">
-					<button type="submit" class="btn btn-default check_out" name="redirect">Thanh toán
-						VNPAY</button>
-				</form>
+				
 				<form action="{{url('/momo-payment')}}" method="post">
 					{{ csrf_field() }}
 					<input type="hidden" name="total_momo" value="{{$total_after}}">
