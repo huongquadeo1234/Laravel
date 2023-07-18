@@ -3,6 +3,8 @@
 use Illuminate\Database\Seeder;
 use App\Admin;
 use App\Roles;
+use Illuminate\Support\Facades\DB;
+
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -15,9 +17,9 @@ class UsersTableSeeder extends Seeder
         Admin::truncate();
         DB::table('admin_roles')->truncate();
 
-        $adminRoles = Roles::where('name','admin')->first(); 
-        $authorRoles = Roles::where('name','author')->first(); 
-        $userRoles = Roles::where('name','user')->first(); 
+        $adminRoles = Roles::where('name','admin')->first();
+        $authorRoles = Roles::where('name','author')->first();
+        $userRoles = Roles::where('name','user')->first();
 
         $admin = Admin::create([
 
@@ -36,7 +38,7 @@ class UsersTableSeeder extends Seeder
         'admin_password' => md5('123456'),
 
         ]);
-        
+
          $user = Admin::create([
 
         'admin_name' => 'dunguser',
@@ -52,6 +54,6 @@ class UsersTableSeeder extends Seeder
 
         factory(App\Admin::class,20)->create();
     }
-       
+
 
 }
