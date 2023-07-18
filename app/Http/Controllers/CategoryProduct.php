@@ -16,6 +16,7 @@ use App\Contact;
 use Illuminate\Support\Facades\Redirect;
 session_start();
 use Auth;
+use Symfony\Component\Console\Helper\Helper;
 use Toastr;
 
 class CategoryProduct extends Controller
@@ -32,14 +33,14 @@ class CategoryProduct extends Controller
         $this->AuthLogin();
         $category=CategoryProductModel::where('category_parent',1)->orderBy('category_id','desc')->get();
     	return view('admin.category.add_category_product')->with(compact('category'));
-        
+
     }
     public function all_category_product(){
         $this->AuthLogin();
         $category_product = CategoryProductModel::where('category_parent',1)->orderBy('category_id','desc')->get();
     	$all_category_product = DB::table('tbl_category_product')->orderBy('category_parent','desc')->paginate(5);
     	$manager_category_product  = view('admin.category.all_category_product')->with('all_category_product',$all_category_product)->with('category_product', $category_product);
-        
+
     	return view('admin_layout')->with('admin.category.all_category_product', $manager_category_product);
 
 
@@ -50,26 +51,26 @@ class CategoryProduct extends Controller
 
         $data = $request->validate([
         'category_name' => 'required|unique:tbl_category_product|max:255',
-        
+
         'category_parent' => 'required',
         'category_product_keywords' => 'required',
         'slug_category_product' => 'required',
         'category_product_desc' => 'required',
-        'category_product_status' => 'required', 
-        
-    ],[ 
+        'category_product_status' => 'required',
+
+    ],[
         'category_name.required' => 'Tên danh mục không được để trống',
         'category_name.unique' => 'Tên danh mục đã tồn tại, vui lòng chọn tên khác',
 
-       
+
         'category_product_keywords.required' => 'Vui lòng điền từ khóa danh mục',
         'slug_category_product.required' => 'Vui lòng điền slug danh mục',
         'category_product_desc.required' => 'Vui lòng điền mô tả',
-        
+
     ]
 );
-        
-        
+
+
         if($data){
         $category = new CategoryProductModel();
         $category->category_name = $data['category_name'];
@@ -85,18 +86,18 @@ class CategoryProduct extends Controller
         }
         else{
             Session::put('message','Vui lòng điền đầy đủ các trường');
-        
+
     	    return Redirect::to('add-category-product');
         }
-      
-       
+
+
     	// $data = array();
     	// $data['brand_name'] = $request->brand_product_name;
         // $data['brand_slug'] = $request->brand_slug;
     	// $data['brand_desc'] = $request->brand_product_desc;
     	// $data['brand_status'] = $request->brand_product_status;
     	// DB::table('tbl_brand')->insert($data);
-        
+
     	// Session::put('message','Thêm thương hiệu sản phẩm thành công');
     	// return Redirect::to('add-brand-product');
 
@@ -104,8 +105,8 @@ class CategoryProduct extends Controller
         // $this->AuthLogin();
     	// $data = array();
         // if($data){
-        
-    	
+
+
 
     // 	DB::table('tbl_category_product')->insert($data);
     // 	Session::put('message','Thêm danh mục sản phẩm thành công');
@@ -114,7 +115,7 @@ class CategoryProduct extends Controller
     //     	Session::put('message','Làm ơn thêm đầy đủ các trường');
     // 		return Redirect::to('add-category-product');
     //     }
-       	
+
     }
     public function unactive_category_product($category_product_id){
         $this->AuthLogin();
@@ -158,6 +159,11 @@ class CategoryProduct extends Controller
     }
     public function delete_category_product($category_product_id){
         $this->AuthLogin();
+        $admin_id = Auth::id();
+        if(checkAdminPermission($admin_id)) {
+            Toastr::error('Bạn không có quyền xóa dữ liệu','Thất bại');
+            return redirect('/all-category-product');
+        }
         DB::table('tbl_category_product')->where('category_id',$category_product_id)->delete();
         Toastr::success('Xóa danh mục sản phẩm thành công','Thành công');
 
@@ -170,8 +176,8 @@ class CategoryProduct extends Controller
        //slide
         $slider = Slider::orderBy('slider_id','DESC')->where('slider_status','1')->take(4)->get();
 
-        $cate_product = DB::table('tbl_category_product')->where('category_status','1')->orderby('category_id','desc')->get(); 
-        $brand_product = DB::table('tbl_brand')->where('brand_status','1')->orderby('brand_id','desc')->get(); 
+        $cate_product = DB::table('tbl_category_product')->where('category_status','1')->orderby('category_id','desc')->get();
+        $brand_product = DB::table('tbl_brand')->where('brand_status','1')->orderby('brand_id','desc')->get();
 
         $category_by_slug = CategoryProductModel::where('slug_category_product',$slug_category_product)->get();
         $min_price = Product::min('product_price');
@@ -203,23 +209,23 @@ class CategoryProduct extends Controller
                 $category_by_id = Product::with('category')->where('category_id',$category_id)->whereBetween('product_price',[$min_price,$max_price])->orderBy('product_price','desc')->paginate(6)->appends(request()->query());
             }
 
-        
+
 
             else{
                 $category_by_id = Product::with('category')->where('category_id',$category_id)->orderBy('product_id','DESC')->paginate(6);
             }
-        
+
         // $category_by_id = DB::table('tbl_product')->join('tbl_category_product','tbl_product.category_id','=','tbl_category_product.category_id')->where('tbl_category_product.slug_category_product',$slug_category_product)->paginate(6);
-     
-       
+
+
         $contact = Contact::where('info_id',1)->get();
 
         $category_name = DB::table('tbl_category_product')->where('tbl_category_product.slug_category_product',$slug_category_product)->limit(1)->get();
 
 
         foreach($category_name as $key => $val){
-                //seo 
-                $meta_desc = $val->category_desc; 
+                //seo
+                $meta_desc = $val->category_desc;
                 $meta_keywords = $val->meta_keywords;
                 $meta_title = $val->category_name;
                 $url_canonical = $request->url();
@@ -228,7 +234,7 @@ class CategoryProduct extends Controller
 
 
         return view('pages.category.show_category')->with('category',$cate_product)->with('brand',$brand_product)->with('category_by_id',$category_by_id)->with('category_name',$category_name)->with('meta_desc',$meta_desc)->with('meta_keywords',$meta_keywords)->with('meta_title',$meta_title)->with('url_canonical',$url_canonical)->with('slider',$slider)->with('contact',$contact)->with('min_price',$min_price)->with('max_price',$max_price)->with('max_price_range',$max_price_range)->with('min_price_range',$min_price_range);
-        
+
     }
 
 
@@ -262,8 +268,8 @@ class CategoryProduct extends Controller
             $output .= ' <div class="tab-content">
             <div class="tab-pane fade active in" id="tshirt">';
                 foreach ($product as $key => $val) {
-                
-               
+
+
               $output .= '<div class="col-sm-3">
                     <div class="product-image-wrapper">
                         <div class="single-products">
@@ -277,7 +283,7 @@ class CategoryProduct extends Controller
                     </div>
                 </div>';
             }
-                
+
                 $output .= '</div>
 
 
@@ -300,6 +306,6 @@ class CategoryProduct extends Controller
         }
         echo $output;
     }
-  
+
 
 }
