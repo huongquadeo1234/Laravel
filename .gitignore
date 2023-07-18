@@ -1,3 +1,9 @@
 /node_modules
 /vendor
 
+.idea/laravel.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/php.xml
+.idea/phpunit.xml
+.idea/vcs.xml
